@@ -2,11 +2,6 @@
 
 ## ERD(Engineering Requirements Document)
 
-### What Is The ERD ?
-
-- An engineering requirements document (ERD) is a statement describing the goal and purpose of a new component. Unlike a product requirements document (PRD), which tells engineers what they need to build, an ERD specifies why a part is being built and how its design fuels its purpose. By following the engineering requirements outlined in an ERD, engineers can ensure that the part they build will satisfy customer needs.
-  **you can read more about ERD from [here](https://www.fastradius.com/resources/how-to-write-an-engineering-requirements-document/).**
-
 ## Storage
 
 - We'll use a [NoSQL](https://www.techtarget.com/searchdatamanagement/definition/MongoDB) database [MongoBD](https://www.mongodb.com) is quite useful for working with large sets of distributed data. MongoDB is a tool that can manage document-oriented information, store or retrieve information. MongoDB is used for high-volume data storage, helping organizations store large amounts of data while still performing rapidly. Organizations also use MongoDB for its ad-hoc queries, indexing, load balancing, aggregation, server-side JavaScript execution and other features.

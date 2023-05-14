@@ -1,10 +1,5 @@
 # PRD: Any.do
 
-### What is the PRD ?
-
-A product requirements document (PRD) outlines the requirements and functionality of the product you’re going to build so that your **_development team_** understands what they're building, who it's for, and the purpose it will serve for its end users.<br/>
-you can read more about PRD from [here](https://www.perforce.com/blog/alm/how-write-product-requirements-document-prd#what).
-
 ## Purpose
 
 [Any.do](https://www.any.do/) is **_"One simple to-do list for you and your team"_** .. it's like [Todoist](https://todoist.com/) and [Trello](https://trello.com/). it provides users with create a simple to-do list for daily tasks and managing projects, and business with Workspace.
@@ -15,8 +10,8 @@ you can read more about PRD from [here](https://www.perforce.com/blog/alm/how-wr
 
 ### Users
 
-- We will build authentication & autheraization system with JWT or social login like (Google, Facebook, Github).
-- Admin can controll in (CRUD) tags
+- We will build authentication & authorization system with JWT or social login like (Google, Facebook, Github).
+- Admin can control in (CRUD) tags
 
 ### Tasks
 
