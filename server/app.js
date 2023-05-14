@@ -13,6 +13,8 @@ import helmet from "helmet";
 import xss from "xss-clean";
 import mongoSanitize from "express-mongo-sanitize";
 import hpp from "hpp";
+import taskRouter from "./resources/tasks/taskRoute.js";
+import userRouter from "./resources/users/userRoute.js";
 
 //_________EXPRESS_APP_________//
 const app = express();
@@ -63,9 +65,8 @@ app.use(hpp());
 //_________ROUTES_________//
 // 1) App Routes
 // app.use(routes);
-app.get("/", (req, res) => {
-  res.send("Welcome From Server 😁 Just Test !!!!");
-});
+app.use("/api/v1", taskRouter);
+app.use("/api/v1", userRouter);
 // 2) 404 Urls
 app.all("*", routeNotFoundError);
 
