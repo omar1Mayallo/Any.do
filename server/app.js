@@ -5,7 +5,7 @@ import env from "./config/envValidation.js";
 import globalErrorMiddleware, {
   routeNotFoundError,
 } from "./middlewares/globalErrorMiddleware.js";
-// import routes from "./routes/index.js";
+import baseRouter from "./utils/routes/index.js";
 
 // SECURITY PACKAGES
 import rateLimit from "express-rate-limit";
@@ -13,8 +13,6 @@ import helmet from "helmet";
 import xss from "xss-clean";
 import mongoSanitize from "express-mongo-sanitize";
 import hpp from "hpp";
-import taskRouter from "./resources/tasks/taskRoute.js";
-import userRouter from "./resources/users/userRoute.js";
 
 //_________EXPRESS_APP_________//
 const app = express();
@@ -63,10 +61,9 @@ app.use(xss());
 app.use(hpp());
 
 //_________ROUTES_________//
-// 1) App Routes
-// app.use(routes);
-app.use("/api/v1", taskRouter);
-app.use("/api/v1", userRouter);
+// 1) Base Routes
+app.use(baseRouter);
+
 // 2) 404 Urls
 app.all("*", routeNotFoundError);
 

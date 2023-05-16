@@ -1,6 +1,6 @@
 import asyncHanler from "express-async-handler";
 import Task from "./task.model.js";
-import ApiError from "../../utils/ApiError.js";
+import ApiError from "../../utils/apiError.js";
 
 // ----------------------------
 // @desc    Create A Task
@@ -23,10 +23,8 @@ export const createTask = asyncHanler(async (req, res) => {
 // @access  Public
 // ----------------------------
 export const getAllTasks = asyncHanler(async (req, res) => {
-  const task = await Task.find().populate({ path: "user" });
-  res
-    .status(200)
-    .json({ results: task.length, status: "success", data: tasks });
+  const task = await Task.find().populate({path: "user"});
+  res.status(200).json({results: task.length, status: "success", data: tasks});
 });
 // ----------------------------
 // @desc    Get A Task
@@ -34,12 +32,12 @@ export const getAllTasks = asyncHanler(async (req, res) => {
 // @access  Private
 // ----------------------------
 export const getTask = asyncHanler(async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const task = await Task.findById(id);
   if (!task) {
     return next(new ApiError(`No task for this id ${id}`, 404));
   }
-  res.status(200).json({ status: "success", data: task });
+  res.status(200).json({status: "success", data: task});
 });
 // ----------------------------
 // @desc    Update A Task
@@ -47,7 +45,7 @@ export const getTask = asyncHanler(async (req, res) => {
 // @access  Private
 // ----------------------------
 export const updateTask = asyncHanler(async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const updatedTask = await Task.findByIdAndUpdate(id, req.body, {
     new: true,
     runValidators: true,
@@ -69,7 +67,7 @@ export const updateTask = asyncHanler(async (req, res) => {
 // @access  Private
 // ----------------------------
 export const deleteTask = asyncHanler(async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const deleteTask = await Task.findByIdAndDelete(id, req.body);
   //NOTFOUND Document Error
   if (!deleteTask) {

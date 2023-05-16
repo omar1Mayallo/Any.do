@@ -1,4 +1,4 @@
-import asyncHanler from "express-async-handler";
+import asyncHandler from "express-async-handler";
 import User from "./user.model.js";
 
 // ----------------------------
@@ -6,7 +6,7 @@ import User from "./user.model.js";
 // @route   POST  /api/v1/user
 // @access  Private
 // ----------------------------
-export const createUser = asyncHanler(async (req, res, next) => {
+export const createUser = asyncHandler(async (req, res, next) => {
   const user = await User.create(req.body);
   res.status(201).json({
     status: "success",
