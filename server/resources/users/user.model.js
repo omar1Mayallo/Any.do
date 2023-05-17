@@ -36,13 +36,17 @@ const userSchema = new mongoose.Schema(
       },
       select: false,
     },
+    profileImg: {
+      type: String,
+      default:
+        "https://assets-prod.sumo.prod.webservices.mozgcp.net/static/default-FFA-avatar.2f8c2a0592bda1c5.png",
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
     // passwordChangedAt: Date,
-    // profileImg: String,
-    // role: {
-    //   type: String,
-    //   enum: ["user", "admin"],
-    //   default: "user",
-    // },
     // active: {
     //   type: Boolean,
     //   default: true,

@@ -2,16 +2,7 @@ import asyncHandler from "express-async-handler";
 import User from "./user.model.js";
 
 // ----------------------------
-// @desc    Create A User
-// @route   POST  /api/v1/user
-// @access  Private
+// @desc    Get logged user
+// @route   POST  /api/users/me
+// @access  Protected
 // ----------------------------
-export const createUser = asyncHandler(async (req, res, next) => {
-  const user = await User.create(req.body);
-  res.status(201).json({
-    status: "success",
-    data: {
-      user,
-    },
-  });
-});

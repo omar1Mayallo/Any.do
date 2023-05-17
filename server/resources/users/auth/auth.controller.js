@@ -82,4 +82,4 @@ export const logout = asyncHandler(async (req, res, next) => {
 // @access  Public
 // ---------------------------------
 
-export const googleLogin = asyncHandler(async (req, res, next) => {});
+// export const googleLogin = asyncHandler(async (req, res, next) => {});
