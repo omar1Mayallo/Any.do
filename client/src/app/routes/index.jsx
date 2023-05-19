@@ -1,12 +1,13 @@
 import * as React from "react";
 import {Navigate, Route, Routes} from "react-router-dom";
+import {useSelector} from "react-redux";
+
 import Login from "../../pages/Auth/login";
 import Register from "../../pages/Auth/register";
 import Home from "../../pages/Home";
-import Cookies from "js-cookie";
 
 const RoutesBase = () => {
-  const userToken = Cookies.get("token");
+  const {userToken} = useSelector((state) => state.auth.loggedStatus);
 
   return (
     <Routes>

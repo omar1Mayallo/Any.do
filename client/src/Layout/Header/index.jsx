@@ -19,39 +19,30 @@ import Person from "@mui/icons-material/Person";
 import Logout from "@mui/icons-material/Logout";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-
 import {ColorModeContext} from "../../app/theme";
-import Cookies from "js-cookie";
-import {usePostData} from "../../common/hooks/api/usePost";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../../services/auth/authSlice";
 
 const Header = () => {
-  const userToken = Cookies.get("token");
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {userToken} = useSelector((state) => state.auth.loggedStatus);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
 
+  // ProfileMenuToggle
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleLogout = async () => {
-    // Make API call to authenticate user and get JWT token
-    try {
-      // Remove token
-      Cookies.remove("token");
-      handleClose();
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const res = await usePostData("/auth/logout");
 
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+  // LogoutHandler
+  const handleLogout = () => {
+    dispatch(logout());
+    handleClose();
   };
 
   return (
@@ -59,6 +50,7 @@ const Header = () => {
       <AppBar position="static">
         <Container component="div" maxWidth="xl">
           <Toolbar>
+            {/* SideDrawer_Menu_Icon */}
             <IconButton
               size="large"
               edge="start"
@@ -69,6 +61,7 @@ const Header = () => {
               <MenuIcon />
             </IconButton>
 
+            {/* Logo */}
             <Typography
               variant="h6"
               sx={{mr: "auto"}}
@@ -78,7 +71,7 @@ const Header = () => {
               Any.do
             </Typography>
 
-            {/* ToggleMode Button */}
+            {/* ToggleMode_Button */}
             <IconButton
               sx={{ml: 1}}
               onClick={colorMode.toggleColorMode}
@@ -90,9 +83,11 @@ const Header = () => {
                 <Brightness4Icon />
               )}
             </IconButton>
+
             {/* IsAuth render userImage Or Not Render Login Button */}
             {userToken ? (
-              <div>
+              <Box>
+                {/* ProfileMenu_Button */}
                 <IconButton
                   size="large"
                   aria-label="account of current user"
@@ -103,7 +98,7 @@ const Header = () => {
                 >
                   <AccountCircle />
                 </IconButton>
-
+                {/* ProfileMenu_Items*/}
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
@@ -119,26 +114,14 @@ const Header = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {/*<Link to={"/profile"}>
+                  <Link to={"/profile"}>
                     <MenuItem onClick={handleClose}>
                       <ListItemIcon>
                         <Person fontSize="small" />
                       </ListItemIcon>
                       Profile
                     </MenuItem>
-                  </Link> */}
-
-                  <MenuItem
-                    onClick={() => {
-                      Cookies.remove("token");
-                      handleClose();
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Person fontSize="small" />
-                    </ListItemIcon>
-                    Profile
-                  </MenuItem>
+                  </Link>
 
                   <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
@@ -147,13 +130,14 @@ const Header = () => {
                     Logout
                   </MenuItem>
                 </Menu>
-              </div>
+              </Box>
             ) : (
-              <div>
+              <Box>
+                {/* Login_Button */}
                 <Button variant="success" onClick={() => navigate("/login")}>
                   Login
                 </Button>
-              </div>
+              </Box>
             )}
           </Toolbar>
         </Container>

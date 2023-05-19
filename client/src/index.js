@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import {Provider} from "react-redux";
-import {store} from "./app/store";
+import store from "./app/store";
 import CssBaseline from "@mui/material/CssBaseline";
 import {BrowserRouter} from "react-router-dom";
 import MuiThemeProvider from "./app/theme";
+import {Toaster} from "react-hot-toast";
 import App from "./App";
 import "./index.css";
 
@@ -15,6 +16,7 @@ root.render(
       <CssBaseline />
       <BrowserRouter>
         <App />
+        <Toaster position="bottom-left" />
       </BrowserRouter>
     </MuiThemeProvider>
   </Provider>

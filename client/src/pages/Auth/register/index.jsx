@@ -1,7 +1,3 @@
-import {useEffect, useState} from "react";
-
-import Cookies from "js-cookie";
-import {usePostData} from "../../../common/hooks/api/usePost";
 import {
   Container,
   Avatar,
@@ -10,14 +6,21 @@ import {
   Link,
   Box,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {registerSchema} from "../../../validation/auth";
 import {Link as RouterLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {register as registerService} from "../../../services/auth/authServices";
 
 function Register() {
+  const dispatch = useDispatch();
+  const {isMutation} = useSelector((state) => state.auth);
+
+  // RegisterValidation
   const {
     register,
     handleSubmit,
@@ -26,21 +29,10 @@ function Register() {
     resolver: yupResolver(registerSchema),
   });
 
-  const onSubmit = async (data) => {
-    // Make API call to authenticate user and get JWT token
-    try {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const res = await usePostData("/auth/register", data);
-
-      // Set token to cookies to expire in 30 days
-      Cookies.set("token", res.data.token, {expires: 30});
-
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
+  // handleRegisterSubmit
+  const onSubmit = (data) => {
+    dispatch(registerService(data));
   };
-  // console.log(errors);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -52,18 +44,21 @@ function Register() {
           alignItems: "center",
         }}
       >
+        {/* Form_Header */}
         <Avatar sx={{m: 1, bgcolor: "secondary.main"}}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Register
         </Typography>
+        {/* Form_Body */}
         <Box
           component="form"
           noValidate
           onSubmit={handleSubmit(onSubmit)}
           sx={{mt: 1}}
         >
+          {/* Form_Input_Username */}
           <TextField
             inputProps={{...register("username")}}
             error={!!errors.username}
@@ -77,6 +72,7 @@ function Register() {
             name="username"
             autoFocus
           />
+          {/* Form_Input_Email */}
           <TextField
             inputProps={{...register("email")}}
             error={!!errors.email}
@@ -89,6 +85,7 @@ function Register() {
             name="email"
             autoComplete="email"
           />
+          {/* Form_Input_Password */}
           <TextField
             inputProps={{...register("password")}}
             error={!!errors.password}
@@ -100,6 +97,7 @@ function Register() {
             label="Password"
             name="password"
           />
+          {/* Form_Input_ConfirmPassword */}
           <TextField
             inputProps={{...register("confirmPassword")}}
             error={!!errors.confirmPassword}
@@ -111,14 +109,24 @@ function Register() {
             name="confirmPassword"
             label="Confirm Password"
           />
+          {/* Submit_Form_Button */}
           <Button
             type="submit"
-            fullWidth
+            loading={isMutation.loading}
+            disabled={isMutation.loading}
+            startIcon={
+              isMutation.loading && (
+                <CircularProgress size={15} color="inherit" />
+              )
+            }
             variant="contained"
             sx={{mt: 3, mb: 2}}
+            fullWidth
           >
-            Register
+            <span>Register</span>
           </Button>
+
+          {/* SignIn_Link */}
           <Box sx={{textAlign: "center"}}>
             <Link component={RouterLink} to="/login" variant="body2">
               {"Already have an account? Sign In"}
