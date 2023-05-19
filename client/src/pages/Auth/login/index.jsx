@@ -1,5 +1,5 @@
-import * as React from "react";
-import {useState} from "react";
+import {useEffect} from "react";
+
 import Cookies from "js-cookie";
 import {usePostData} from "../../../common/hooks/api/usePost";
 import {
@@ -11,52 +11,14 @@ import {
   Grid,
   Box,
   Typography,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
-import FormInput from "../../../common/components/FormInput";
-
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {loginSchema} from "../../../validation/auth";
+import {Link as RouterLink} from "react-router-dom";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  /* const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Make API call to authenticate user and get JWT token
-    try {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const res = await usePostData("/auth/login", {
-        email,
-        password,
-      });
-
-      // Set token to cookies to expire in 30 days
-      Cookies.set("token", res.data.token, {expires: 30});
-
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };*/
-
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
   const {
     register,
     handleSubmit,
@@ -65,8 +27,22 @@ function Login() {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit = (data) => console.log(data);
-  console.log(errors);
+  const onSubmit = async (data) => {
+    // Make API call to authenticate user and get JWT token
+    try {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const res = await usePostData("/auth/login", data);
+
+      // Set token to cookies to expire in 30 days
+      Cookies.set("token", res.data.token, {expires: 30});
+
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // console.log(errors);
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -103,7 +79,6 @@ function Login() {
             autoComplete="email"
             autoFocus
           />
-
           <TextField
             inputProps={{...register("password")}}
             error={!!errors.password}
@@ -116,7 +91,6 @@ function Login() {
             name="password"
             label="Password"
           />
-
           <Button
             type="submit"
             fullWidth
@@ -132,7 +106,7 @@ function Login() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/register" variant="body2">
+              <Link component={RouterLink} to="/register" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
@@ -144,39 +118,3 @@ function Login() {
 }
 
 export default Login;
-
-//   <TextField
-//             margin="normal"
-//             required
-//             fullWidth
-//             name="password"
-//             label="Password"
-//             type="password"
-//             id="password"
-//             autoComplete="current-password"
-//           />
-//     <h1>Login</h1>
-//       <form onSubmit={handleSubmit}>
-//         <div>
-//           <label htmlFor="email">Email</label>
-//           <input
-//             type="email"
-//             id="email"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//             required
-//           />
-//         </div>
-//         <div>
-//           <label htmlFor="password">Password</label>
-//           <input
-//             type="password"
-//             id="password"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//             required
-//           />
-//         </div>
-//         <button type="submit">Login</button>
-//       </form>
-//       */

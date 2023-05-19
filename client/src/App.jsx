@@ -1,22 +1,15 @@
-import * as React from "react";
-import {Route, Routes} from "react-router-dom";
-
-import Login from "./pages/Auth/login";
-import Register from "./pages/Auth/register";
-import Home from "./pages/Home";
-
+import Cookies from "js-cookie";
 import Header from "./Layout/Header";
+import RoutesBase from "./app/routes";
 
 function App() {
+  const userToken = Cookies.get("token");
+  console.log(userToken);
   return (
     <>
       <Header />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      <RoutesBase />
     </>
   );
 }

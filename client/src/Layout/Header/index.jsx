@@ -1,14 +1,11 @@
 import * as React from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {
   AppBar,
   Box,
   Toolbar,
   Typography,
   IconButton,
-  Switch,
-  FormControlLabel,
-  FormGroup,
   MenuItem,
   Menu,
   Button,
@@ -24,17 +21,16 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 import {ColorModeContext} from "../../app/theme";
+import Cookies from "js-cookie";
+import {usePostData} from "../../common/hooks/api/usePost";
 
 const Header = () => {
-  const [auth, setAuth] = React.useState(true);
+  const userToken = Cookies.get("token");
+
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
-
-  // HandleIsLogin
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,6 +38,20 @@ const Header = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleLogout = async () => {
+    // Make API call to authenticate user and get JWT token
+    try {
+      // Remove token
+      Cookies.remove("token");
+      handleClose();
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const res = await usePostData("/auth/logout");
+
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -81,7 +91,7 @@ const Header = () => {
               )}
             </IconButton>
             {/* IsAuth render userImage Or Not Render Login Button */}
-            {auth ? (
+            {userToken ? (
               <div>
                 <IconButton
                   size="large"
@@ -109,16 +119,28 @@ const Header = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <Link to={"/profile"}>
+                  {/*<Link to={"/profile"}>
                     <MenuItem onClick={handleClose}>
                       <ListItemIcon>
                         <Person fontSize="small" />
                       </ListItemIcon>
                       Profile
                     </MenuItem>
-                  </Link>
+                  </Link> */}
 
-                  <MenuItem onClick={handleClose}>
+                  <MenuItem
+                    onClick={() => {
+                      Cookies.remove("token");
+                      handleClose();
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Person fontSize="small" />
+                    </ListItemIcon>
+                    Profile
+                  </MenuItem>
+
+                  <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
                       <Logout fontSize="small" />
                     </ListItemIcon>
@@ -128,27 +150,14 @@ const Header = () => {
               </div>
             ) : (
               <div>
-                <Button variant="success">Login</Button>
+                <Button variant="success" onClick={() => navigate("/login")}>
+                  Login
+                </Button>
               </div>
             )}
           </Toolbar>
         </Container>
       </AppBar>
-
-      {/* LoginToggle
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? "Logout" : "Login"}
-        />
-      </FormGroup>
-      */}
     </Box>
   );
 };
